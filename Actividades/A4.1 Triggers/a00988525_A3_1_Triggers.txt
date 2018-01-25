@@ -1,0 +1,5 @@
+create trigger limite_sueldo after update of salary on employee referencing new as a old as o for each row when (n.salary >1.3* o.salary) signal sqlstate '75000' set message_text='Prohibido subir tanto el sueldo'
+
+create trigger compra no cascade before insert on compras referencing new as n for each row when(n.producto_id = (select pid from inventory where pid = n.producto_id) and n.cantidad > (select quantity from inventory where pid = n.producto_id)) signal sqlstate '75000' set message_text='No tenemos inventario suficiente'
+
+create trigger postventa after insert on compras referencing new as n for each row select quantity from inventory where pid = n.producto_id and update inventory.quantity = (quantity - n.cantidad) where inventory.product
