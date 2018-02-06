@@ -16,11 +16,11 @@ CREATE TABLE SEGURO (
   ANO DATE NOT NULL ,
   MODELO VARCHAR(20) NOT NULL ,
   MARCA VARCHAR(20) NOT NULL ,
-  PRECIO_FACTURA DECIMAL(7,2) NOT NULL ,
+  PRECIO_FACTURA DECIMAL(8,2) NOT NULL ,
   NUM_MOTOR VARCHAR(30) NOT NULL ,
   NUM_SERIE VARCHAR(30) NOT NULL ,
   PLACA VARCHAR(10) NOT NULL,
-  
+
   PRECIO_SEGURO DECIMAL(6,2) NOT NULL,
   COVERTURA INT NOT NULL,
   ESTATUS INT NOT NULL DEFAULT 1,
@@ -38,16 +38,22 @@ CREATE TABLE SEGURO (
 CREATE TABLE SEGURO_HYSTORY LIKE SEGURO;
 ALTER TABLE SEGURO ADD VERSIONING USE HISTORY TABLE SEGURO_HYSTORY;
 
+INSERT INTO SEGURO (ANO, MODELO, MARCA, PRECIO_FACTURA, NUM_MOTOR, NUM_SERIE, PLACA, PRECIO_SEGURO, COVERTURA, cstart, cend)
+VALUES ('2017-01-01', 'Fusion', 'Ford', 300000.00, '1q2w3e4r5t6y', '1q2w3e4r5t6y', '123asd', 10000, 1, '2017-01-01', '2018-01-01');
+
 --Trigger
 create trigger CANCELACION
-  after update on SEGURO referencing
-  old as old_values
-  new as new_values
+  after update on SEGURO
   for each row mode db2sql
-  begin atomic
-    update estadisticas
-      set empDespedidos = empDespedidos +1;
-  end
+  WHEN (ESTATUS = 0 )
+    begin atomic
+      set meses_restantes =  MONTHS_BETWEEN(CURRENT_DATE, cstart);
+      set costo_mes =  PRECIO_SEGURO/MONTHS_BETWEEN(cend,cstart);
+      set PRECIO_SEGURO = costo_mes * meses_restantes;
+    end;
+--
+
+select * from seguro;
 
 --En update no se puede disminuir las coverturas de poliza
 CREATE  INSURANCErestriction
