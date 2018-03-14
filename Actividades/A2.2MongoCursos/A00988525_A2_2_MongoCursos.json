@@ -1,0 +1,24 @@
+db.cursos.insert({nombre:"Bases de datos"})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{profesor:{nombre:"Ariel",nomina:10000, direccion:"xxx",genero:"H",cursos_impartidos:[{titulo_curso:"aaa", año:2017}]}}})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{año:["2018"]}})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{eval_escritas:{ preg_teoricas:10}}})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{"eval_escritas.preg_practicas":10}})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{alumnos:[{nombre:"Isaias", matricula:"A00988525", direccion: "Por ahi",genero:"H"}]}})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{"alumnos.0.cursos":[{nombre:"bd1",año:201,calif:[100,99,100,99],calif_final:100}]}})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{"alumnos.0.eval_curso":80}})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{"alumnos.0.eval_profesor":88}})
+
+db.cursos.update({nombre:"Bases de datos"},{$set:{"alumnos.0.comentarios":["va bien"]}})
+
+db.cursos.update({nombre:"Bases de datos"},{$addToSet:{"alumnos.0.comentarios":"termino de lujo"}})
+
+
+{"_id":"5aa9b2980c251b188dd34b3e","nombre":"Bases de datos","profesor":{"nombre":"Ariel","nomina":10000,"direccion":"xxx","genero":"H","cursos_impartidos":[{"titulo_curso":"aaa","año":2017}]},"año":["2018"],"eval_escritas":{"preg_teoricas":10,"preg_practicas":10},"alumnos":[{"nombre":"Isaias","matricula":"A00988525","direccion":"Por ahi","genero":"H","cursos":[{"nombre":"bd1","año":201,"calif":[100,99,100,99],"calif_final":100}],"eval_curso":80,"eval_profesor":88,"comentarios":["va bien","termino de lujo"]}]}
