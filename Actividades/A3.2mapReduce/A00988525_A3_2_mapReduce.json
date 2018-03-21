@@ -1,0 +1,62 @@
+
+1. Cuántos restaurantes hay por ZipCode
+
+var zipMap = function(){
+    emit(this.address.zipcode,1);
+};
+var zipQuantity = function(zipcode,value){
+    return Array.sum(value);
+};
+db.restaurantes.mapReduce(zipMap,zipQuantity,{ out:"res"})
+----------------------------------------
+
+2. ¿Cuántos grades hay por usuario?
+
+var gradeMap = function(){
+    emit(this.name,this.grades.length);
+};
+var gradeQuantity = function(name,grades){
+    return grades[0];
+};
+db.restaurantes.mapReduce(gradeMap,gradeQuantity,{ out:"res"})
+-----------------------------------------
+
+3. Cuál es el total de scores por usuario
+
+var scoreMap = function(){
+    this.grades.forEach((value)=>{
+        emit(this.name, value.score)});
+};
+var scoreQuantity = function(name,score){
+    return Array.sum(score);
+};
+db.restaurantes.mapReduce(scoreMap,scoreQuantity,{ out:"res"})
+------------------------------------------
+
+4. Cuántos restaurantes obtuvieron el grade A, Grade B y Grade C
+var gMap = function(){
+    if(this.grades.find(grade => grade.grade ==='A')){
+        emit('A',1)
+    }
+    if(this.grades.find(grade => grade.grade ==='B')){
+        emit('B',1)
+    }
+    if(this.grades.find(grade => grade.grade ==='C')){
+        emit('C',1)
+    }
+};
+var gQuantity = function(name,score){
+    return Array.sum(score);
+};
+db.restaurantes.mapReduce(gMap,gQuantity,{ out:"res"})
+---------------------------------------------
+
+5. Agrupa los restaurantes por “cuisine” y cuenta cuántos restaurantes hay por cada categoría
+
+var cuicineMap = function(){
+    emit(this.cuisine, 1);
+};
+var cuicineQuantity = function(cuisine,score){
+    return Array.sum(score);
+};
+db.restaurantes.mapReduce(cuicineMap,cuicineQuantity,{ out:"res"})
