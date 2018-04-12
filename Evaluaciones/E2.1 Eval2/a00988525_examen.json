@@ -1,0 +1,95 @@
+Isaias Martinez Vieyra
+A00988525
+
+¿Cuál es el total de alumnos inscritos?
+
+    db.grades.aggregate([
+        {$group: {_id:"$student_id"}},
+        {$count:"Total alumnos"}
+    ])
+
+    Total de alumnos = 50
+
+¿Cuántos cursos se han impartido?
+
+    db.grades.aggregate([
+        {$group: {_id:"$class_id"}},
+        {$count:"Total cursos"}
+    ])
+
+    Total de cursos = 31
+
+Encuentra, para cada alumno, su promedio obtenido en cada una de las clases en las que fue inscrito (promedia exámenes, quizes, tareas y todas las actividades realizadas que contenga un grade)
+
+    var scoreMap = function(){
+        this.scores.forEach((value)=>{   
+            emit(this.student_id, value.score)});
+    };
+    var scoreQuantity = function(name,score){
+        return Array.sum(score)/score.length;
+    };
+    db.grades.mapReduce(scoreMap,scoreQuantity,{ out:"res"}).find()
+
+
+¿Cuál fue la materia que tiene la calificación más baja (muestra el id de la materia, el id del alumno y la calificación)?
+
+var scoreminMap = function(){
+    min=100;
+    this.scores.forEach((value)=>{ 
+        if(value.score < min){
+            min = value.score
+        }  
+    });
+    emit(this._id, min)
+};
+var scoreminQuantity = function(name,score){
+    return Array.sum(score);
+};
+db.grades.mapReduce(scoreminMap,scoreminQuantity,{ out:"res"}).find().sort({value:1}).limit(1)
+
+¿Cuál es la materia en la que se han dejado más tareas?
+
+var tareaMap = function(){
+    this.scores.forEach((value)=>{  
+        if(value.type == "homework"){
+            emit(this.class_id, 1)
+        } 
+    });
+};
+var tareaQuantity = function(name,score){
+    return Array.sum(score);
+};
+db.grades.mapReduce(tareaMap,tareaQuantity,{ out:"res"}).find().sort({value:-1}).limit(1)
+
+class_id = 22
+max homeworks = 43
+
+¿Qué alumno se inscribió en más cursos?
+
+var alumMap = function(){
+    emit(this.student_id,1);
+};
+var aluQuantity = function(name,value){
+    return Array.sum(value);
+};
+db.grades.mapReduce(alumMap,aluQuantity,{ out:"res"}).find().sort({value:-1}).limit(5)
+
+Son 4 alumnos
+ids = 0,9,30,40
+#cursos = 11
+
+¿Cuál fue el curso que tuvo más reprobados?
+
+var burrosMap = function(){
+    this.scores.forEach((value)=>{  
+        if(value.type == "exam" && value.score< 70){
+            emit(this.class_id, 1)
+        } 
+    });
+};
+var burrosQuantity = function(name,score){
+    return Array.sum(score);
+};
+db.grades.mapReduce(burrosMap,burrosQuantity,{ out:"res"}).find().sort({value:-1}).limit(1)
+curso con mas reprobados = curso_id = 22
+#alumnos reprobados = 11
