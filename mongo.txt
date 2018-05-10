@@ -1,0 +1,38 @@
+
+//
+[{
+    name: "peter" ,
+    numProds: 8
+},
+{
+    name: "peter" ,
+    numProds: 9
+},
+{
+    name: "peter" ,
+    numProds: 10
+},
+{
+    name: "joan" ,
+    numProds: 1
+},
+{
+    name: "joan",
+    numProds: 2
+},
+{
+    name: "joan",
+    numProds: 3
+},
+{
+    name: "isaias",
+    numProds: 10
+},
+{
+    name: "martin" ,
+    numProds: 20
+},
+{
+    name: "fermin" ,
+    numProds: 30
+}]

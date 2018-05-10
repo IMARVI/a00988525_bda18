@@ -1,0 +1,57 @@
+
+//para agrregar un grupo lo metes como un arreglo
+// db.clientes.find().prety()  --- imprime de forma bonita la info
+// use vetnas ---ocupa la base de datos o la crea
+// db.createCollection("clientes") -- crea la coleccion clientes dentro de la base datos
+//db.clientes.insert({nombre:"peter", numprods:9})
+
+
+//key = name, value= numProds
+var map1 = function(){
+emit(this.name,this.numProds);
+};
+
+
+//var reduce1 = function(name,values){
+    var n = Array.sum(values);
+    return n;
+};
+
+}
+
+[{
+    name: "peter" ,
+    numProds: 8
+},
+{
+    name: "peter" ,
+    numProds: 9
+},
+{
+    name: "peter" ,
+    numProds: 10
+},
+{
+    name: "joan" ,
+    numProds: 1
+},
+{
+    name: "joan",
+    numProds: 2
+},
+{
+    name: "joan",
+    numProds: 3
+},
+{
+    name: "isaias",
+    numProds: 10
+},
+{
+    name: "martin" ,
+    numProds: 20
+},
+{
+    name: "fermin" ,
+    numProds: 30
+}]

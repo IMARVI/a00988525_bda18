@@ -1,0 +1,25 @@
+<a type="button" href="/recetas">Regresar</a>
+<h1><%= receta %></h1>
+<table>
+  <tr>
+    <th>Ingredientes</th>
+    <th>Borrar</th>
+  </tr>
+<% ingredientes.forEach(function(ingrediente){ %>
+  <tr>
+    <td><%= ingrediente %></td>
+    <td><a type="button" href="/receta/eliminar-ingrediente/<%= receta %>/<%= ingrediente %>">Borrar</a></td>
+  </tr>
+<% }) %>
+</table>
+<h2>Nuevo ingrediente</h2>
+
+<form method="post" action="/ingrediente/nuevo/<%= receta %>">
+  <label>Tipo</label>
+  <select name="materiasPrimas" id="materiasPrimas">
+    <% materiasPrimas.forEach(function(materiaPrima){ %>
+      <option value="<%= materiaPrima %>" name="mp_type"><%= materiaPrima %></option>
+    <% }) %>
+  </select>
+  <input type="submit" value="Agregar">
+</form>

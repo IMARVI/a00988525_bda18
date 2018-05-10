@@ -1,0 +1,142 @@
+{
+    name: "peter",
+    numprod: 2,
+    detail : [{
+        prod: "prod1",
+        price:500
+        },
+        {
+        prod: "prod2",
+        price:1000
+        }
+    ]
+},
+{
+    name: "peter",
+    numprod: 2,
+    detail : [{
+        prod: "prod1",
+        price:555
+        },
+        {
+        prod: "prod2",
+        price:1001
+        }
+    ]
+},
+{
+    name: "peter",
+    numprod: 2,
+    detail : [{
+        prod: "prod3",
+        price:666
+        },
+        {
+        prod: "prod2",
+        price:505
+        }
+    ]
+},
+{
+    name: "juan",
+    numprod: 2,
+    detail : [{
+        prod: "prod9",
+        price:200
+        },
+        {
+        prod: "prod2",
+        price:666
+        }
+    ]
+},
+{
+    name: "juan",
+    numprod: 2,
+    detail : [{
+        prod: "prod9",
+        price:1100
+        },
+        {
+        prod: "prod2",
+        price:1010
+        }
+    ]
+},
+{
+    name: "martin",
+    numprod: 2,
+    detail : [{
+        prod: "prod5",
+        price:606
+        },
+        {
+        prod: "prod2",
+        price:1230
+        }
+    ]
+},
+{
+    name: "martin",
+    numprod: 2,
+    detail : [{
+        prod: "prod1",
+        price:10
+        },
+        {
+        prod: "prod2",
+        price:109
+        }
+    ]
+},
+{
+    name: "isaias",
+    numprod: 2,
+    detail : [{
+        prod: "prod2",
+        price:500
+        },
+        {
+        prod: "prod5",
+        price:1000
+        }
+    ]
+},
+{
+    name: "isaias",
+    numprod: 2,
+    detail : [{
+        prod: "prod3",
+        price:500
+        },
+        {
+        prod: "prod2",
+        price:1000
+        }
+    ]
+},
+{
+    name: "fermin",
+    numprod: 2,
+    detail : [{
+        prod: "prod9",
+        price:500
+        },
+        {
+        prod: "prod2",
+        price:1000
+        }
+    ]
+}
+
+var mapCost = function(){
+    this.detail.forEach((value)=>{
+        emit(value.prod, value.price)});
+};
+
+var reduceCost = function(prod,price){
+    return Array.sum(price);
+};
+
+db.clientes2.mapReduce(mapCost,reduceCost,{ out:"res"})
+db.clientes2.mapReduce(mapCost,reduceCost,{ out:"res", query: {"name": "fermin"}})
